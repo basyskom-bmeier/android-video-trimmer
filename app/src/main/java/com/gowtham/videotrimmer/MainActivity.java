@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -224,8 +225,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private boolean checkCamStoragePer() {
-        return checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
+        // return checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                // Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            return checkPermission(
+                    Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.CAMERA);
+        }
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return checkPermission(
+                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
+        } else
+            return checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA);
     }
 
     private boolean checkPermission(String... permissions) {
